@@ -8,7 +8,7 @@ USE nombre_basededatos;
 -- Creación de la tabla "lugar_procedencia"
 CREATE TABLE lugar_procedencia (
     id_lugar_procedencia INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(50)
+    nombre_lugar VARCHAR(50)
 );
 
 -- Creación de la tabla "persona"
