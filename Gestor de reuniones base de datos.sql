@@ -1,98 +1,130 @@
--- 
-CREATE TABLE lugar_procedencia(
-	id_lugar_procedencia INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--Correccion DML dada por la IA para nuestra Base de datos 
+-- Creación de la base de datos
+CREATE DATABASE nombre_basededatos;
+
+-- Selección de la base de datos
+USE nombre_basededatos;
+
+-- Creación de la tabla "lugar_procedencia"
+CREATE TABLE lugar_procedencia (
+    id_lugar_procedencia INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(50)
 );
 
-CREATE TABLE persona(
-	id_persona INT(10)PRIMARY KEY NOT NULL AUTO_INCREMENT,
+-- Creación de la tabla "persona"
+CREATE TABLE persona (
+    id_persona INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_lugar_procedencia INT(10),
     nombre VARCHAR(50),
-    telefono INT(10),
+    telefono VARCHAR(15),
     tipo_asistente VARCHAR(10),
-    FOREIGN KEY(id_lugar_procedencia) REFERENCES lugar_procedencia(id_lugar_procedencia) ON DELETE CASCADE
+    FOREIGN KEY (id_lugar_procedencia) REFERENCES lugar_procedencia (id_lugar_procedencia) ON DELETE CASCADE
 );
 
-CREATE TABLE partido_politico(
-	id_partido INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-   	nombre VARCHAR(50),
+-- Creación de la tabla "partido_politico"
+CREATE TABLE partido_politico (
+    id_partido INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(50),
     url_logo VARCHAR(50)
 );
 
-CREATE TABLE reunion(
-	id_reunion INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+-- Creación de la tabla "reunion"
+CREATE TABLE reunion (
+    id_reunion INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_partido INT(10),
-    fecha VARCHAR(10),
+    fecha DATE,
     tematica VARCHAR(50),
     hora VARCHAR(10),
     dirigida_por VARCHAR(50),
     presupuesto INT(10),
-    FOREIGN KEY (id_partido) REFERENCES partido_politico(id_partido)
+    FOREIGN KEY (id_partido) REFERENCES partido_politico (id_partido)
 );
 
-CREATE TABLE lugar_reunion(
-	id_lugar_reunion INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+-- Creación de la tabla "lugar_reunion"
+CREATE TABLE lugar_reunion (
+    id_lugar_reunion INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(50)
 );
 
-CREATE TABLE item(
-	id_item INT(10) PRIMARY KEY AUTO_INCREMENT,
+-- Creación de la tabla "item"
+CREATE TABLE item (
+    id_item INT(10) PRIMARY KEY AUTO_INCREMENT,
     nombre_item VARCHAR(50)   
 );
 
-CREATE TABLE propuesta(
-	id_propuesta INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+-- Creación de la tabla "propuesta"
+CREATE TABLE propuesta (
+    id_propuesta INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     tema_propuesta VARCHAR(500),
     descripcion_propuesta VARCHAR(500)
 );
 
-CREATE TABLE pregunta(
-	id_pregunta INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+-- Creación de la tabla "pregunta"
+CREATE TABLE pregunta (
+    id_pregunta INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_propuesta INT(10),
-    descripcion_pregunta VARCHAR(250),
-    FOREIGN KEY (id_propuesta) REFERENCES propuesta(id_propuesta) ON DELETE CASCADE
+    descripcion_pregunta TEXT,
+    FOREIGN KEY (id_propuesta) REFERENCES propuesta (id_propuesta) ON DELETE CASCADE
 );
 
-CREATE TABLE persona_pregunta(
-	id_perso_pregun INT(10)PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+-- Creación de la tabla "persona_pregunta"
+CREATE TABLE persona_pregunta (
+    id_perso_pregun INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_persona INT(10),
-    id_pregunta	INT(10),
+    id_pregunta INT(10),
     respuesta VARCHAR(50),
-    FOREIGN KEY(id_persona) REFERENCES persona(id_persona) ON DELETE CASCADE,
-    FOREIGN KEY(id_pregunta) REFERENCES pregunta(id_pregunta) ON DELETE CASCADE
+    FOREIGN KEY (id_persona) REFERENCES persona (id_persona) ON DELETE CASCADE,
+    FOREIGN KEY (id_pregunta) REFERENCES pregunta (id_pregunta) ON DELETE CASCADE
 );
 
-CREATE TABLE persona_reunion(
-	id_perso_reu INT(10)PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+-- Creación de la tabla "persona_reunion"
+CREATE TABLE persona_reunion (
+    id_perso_reu INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_persona INT(10),
-    id_reunion	INT(10),
-    FOREIGN KEY(id_persona) REFERENCES persona(id_persona) ON DELETE CASCADE,
-    FOREIGN KEY(id_reunion) REFERENCES reunion(id_reunion) ON DELETE CASCADE
+    id_reunion INT(10),
+    FOREIGN KEY (id_persona) REFERENCES persona (id_persona) ON DELETE CASCADE,
+    FOREIGN KEY (id_reunion) REFERENCES reunion (id_reunion) ON DELETE CASCADE
 );
 
-CREATE TABLE reunion_lugarreunion(
-	id_reu_lugarreu INT(10)PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+-- Creación de la tabla "reunion_lugarreunion"
+CREATE TABLE reunion_lugarreunion (
+    id_reu_lugarreu INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_lugar_reunion INT(10),
-    id_reunion	INT(10),
-    FOREIGN KEY(id_lugar_reunion) REFERENCES lugar_reunion(id_lugar_reunion) ON DELETE CASCADE,
-    FOREIGN KEY(id_reunion) REFERENCES reunion(id_reunion) ON DELETE CASCADE
+    id_reunion INT(10),
+    FOREIGN KEY (id_lugar_reunion) REFERENCES lugar_reunion (id_lugar_reunion) ON DELETE CASCADE,
+    FOREIGN KEY (id_reunion) REFERENCES reunion (id_reunion) ON DELETE CASCADE
 );
 
-CREATE TABLE item_reunion(
-	id_item_reunion INT(10)PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+-- Creación de la tabla "item_reunion"
+CREATE TABLE item_reunion (
+    id_item_reunion INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_item INT(10),
-    id_reunion	INT(10),
-    FOREIGN KEY(id_item) REFERENCES item(id_item) ON DELETE CASCADE,
-    FOREIGN KEY(id_reunion) REFERENCES reunion(id_reunion) ON DELETE CASCADE
+    id_reunion INT(10),
+    FOREIGN KEY (id_item) REFERENCES item (id_item) ON DELETE CASCADE,
+    FOREIGN KEY (id_reunion) REFERENCES reunion (id_reunion) ON DELETE CASCADE
 );
 
-CREATE TABLE propuesta_partido(
-	id_propuesta_partido INT(10)PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+-- Creación de la tabla "propuesta_partido"
+CREATE TABLE propuesta_partido (
+    id_propuesta_partido INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     id_propuesta INT(10),
-    id_partido	INT(10),
-    FOREIGN KEY(id_propuesta) REFERENCES propuesta(id_propuesta) ON DELETE CASCADE,
-    FOREIGN KEY(id_partido) REFERENCES partido_politico(id_partido) ON DELETE CASCADE
+    id_partido INT(10),
+    FOREIGN KEY (id_propuesta) REFERENCES propuesta (id_propuesta) ON DELETE CASCADE,
+    FOREIGN KEY (id_partido) REFERENCES partido_politico (id_partido) ON DELETE CASCADE
 );
+
+
+--correccion DLL dada por la IA
+-- Tabla "persona"
+ALTER TABLE persona MODIFY telefono VARCHAR(15); -- Cambio del tipo de dato de INT(10) a VARCHAR(15) para almacenar números de teléfono de diferentes longitudes
+
+-- Tabla "reunion"
+ALTER TABLE reunion MODIFY fecha DATE; -- Cambio del tipo de dato de VARCHAR(10) a DATE para almacenar fechas de forma adecuada
+
+-- Tabla "pregunta"
+ALTER TABLE pregunta MODIFY descripcion_pregunta TEXT; -- Cambio del tipo de dato de VARCHAR(250) a TEXT para permitir descripciones más extensas
+
+--Insercion de datos
 
 INSERT INTO lugar_procedencia(nombre) VALUES
 ('Las torres'),
@@ -396,6 +428,8 @@ INSERT INTO propuesta_partido(id_propuesta,id_partido ) VALUES
 (14,1),
 (15,1);
 
+--Actualizacion de datos 
+
 UPDATE lugar_procedencia SET nombre = 'Timbio' WHERE id_lugar_procedencia = 1;
 UPDATE lugar_procedencia SET nombre = 'La vega' WHERE id_lugar_procedencia = 2;
 UPDATE lugar_procedencia SET nombre = 'La yunga' WHERE id_lugar_procedencia = 3;
@@ -443,130 +477,171 @@ UPDATE pregunta SET id_propuesta = 4 WHERE id_pregunta = 5;
 
 --consultas 
 
---Todos los ítems para las reuniones.
-SELECT * FROM `item`;
---Los lugares de procedencia de los asistentes 
-SELECT * FROM `lugar_procedencia`;
---Todos los lugares de reuniones;
-SELECT * FROM `lugar_reunion`;
---Partido político como ejemplo 
-SELECT * FROM `lugar_reunion`;
---Todas las reuniones
-SELECT * FROM ` reunion`;
---Todas los nombre de las personas
-SELECT persona.nombre FROM ` persona`;
+-- Todos los ítems para las reuniones.
+SELECT * FROM item;
 
+-- Los lugares de procedencia de los asistentes.
+SELECT * FROM lugar_procedencia;
 
---Reuniones con el mayor presupuesto;
-SELECT * FROM reunion HAVING presupuesto=(select max(presupuesto) from reunion);
---Reuniones con el menor presupuesto;
-SELECT * FROM reunion HAVING presupuesto=(select min(presupuesto) from reunion);
---Reuniones que tengan que ver los debates
+-- Todos los lugares de reuniones.
+SELECT * FROM lugar_reunion;
+
+-- Partidos políticos como ejemplo.
+SELECT * FROM partido_politico;
+
+-- Todas las reuniones.
+SELECT * FROM reunion;
+
+-- Todos los nombres de las personas.
+SELECT nombre FROM persona;
+
+-- Reuniones con el mayor presupuesto.
+SELECT * FROM reunion ORDER BY presupuesto DESC LIMIT 1;
+
+-- Reuniones con el menor presupuesto.
+SELECT * FROM reunion ORDER BY presupuesto ASC LIMIT 1;
+
+-- Reuniones que tengan que ver con debates.
 SELECT * FROM reunion WHERE tematica LIKE '%debate%';
 
---Nombre de las personas que empiezan con a
-SELECT persona.nombre FROM persona WHERE nombre LIKE 'a%';
---Nombre de las personas que terminan por o
-SELECT persona.nombre FROM persona WHERE nombre LIKE '%o';
---Personas las cuales su numero de ceular incie en 321
+-- Nombres de las personas que empiezan con "a".
+SELECT nombre FROM persona WHERE nombre LIKE 'a%';
+
+-- Nombres de las personas que terminan con "o".
+SELECT nombre FROM persona WHERE nombre LIKE '%o';
+
+-- Personas cuyo número de celular inicie con "321".
 SELECT * FROM persona WHERE telefono LIKE '321%';
---personas que su telefono termine en 3 
+
+-- Personas cuyo número de teléfono termine en "3".
 SELECT * FROM persona WHERE telefono LIKE '%3';
---Personas que son de tipo invitados a las reuniones 
+
+-- Personas que son de tipo "invitado" a las reuniones.
 SELECT * FROM persona WHERE tipo_asistente = 'invitado';
---Personas que no son de tipo invitado a las reuniones
-SELECT * FROM persona WHERE NOT tipo_asistente = 'invitado';
---Personas que su numero de telefono inicia en 321 y su nombre termina por a
+
+-- Personas que no son de tipo "invitado" a las reuniones.
+SELECT * FROM persona WHERE tipo_asistente != 'invitado';
+
+-- Personas cuyo número de teléfono inicie con "321" y su nombre termine con "a".
 SELECT * FROM persona WHERE telefono LIKE '321%' AND nombre LIKE '%a';
---Personas que su numero de telefono termina en 3 y su nombre empieza por a
+
+-- Personas cuyo número de teléfono termine en "3" y su nombre empiece con "a".
 SELECT * FROM persona WHERE telefono LIKE '%3' AND nombre LIKE 'a%';
 
---Item que terminan por s
+-- Ítems que terminan con la letra "s".
 SELECT * FROM item WHERE nombre_item LIKE '%s';
---Item que empiezan por c
+
+-- Ítems que empiezan con la letra "c".
 SELECT * FROM item WHERE nombre_item LIKE 'c%';
 
+-- Listado de las personas y su lugar de procedencia.
+SELECT p.id_persona, p.nombre, lp.id_lugar_procedencia, lp.nombre AS lugar_procedencia
+FROM persona p
+INNER JOIN lugar_procedencia lp
+ON p.id_lugar_procedencia = lp.id_lugar_procedencia;
 
---Consultas con join
+-- Personas que provienen de "La yunga".
+SELECT p.id_persona, p.nombre, lp.id_lugar_procedencia, lp.nombre AS lugar_procedencia
+FROM persona p
+INNER JOIN lugar_procedencia lp
+ON p.id_lugar_procedencia = lp.id_lugar_procedencia
+WHERE lp.nombre = 'La yunga';
 
---listado de las personas y su lugar de procedencia 
-SELECT persona.id_persona,persona.nombre,lugar_procedencia.id_lugar_procedencia,lugar_procedencia.nombre
-FROM persona
-INNER JOIN lugar_procedencia 
-ON persona.id_lugar_procedencia = lugar_procedencia.id_lugar_procedencia
+-- Personas que no provienen de "La yunga".
+SELECT p.id_persona, p.nombre, lp.id_lugar_procedencia, lp.nombre AS lugar_procedencia
+FROM persona p
+INNER JOIN lugar_procedencia lp
+ON p.id_lugar_procedencia = lp.id_lugar_procedencia
+WHERE lp.nombre != 'La yunga';
 
---Personas que provienen de La yunga
-SELECT persona.id_persona,persona.nombre,lugar_procedencia.id_lugar_procedencia,lugar_procedencia.nombre 
-FROM persona
-INNER JOIN lugar_procedencia 
-ON persona.id_lugar_procedencia = lugar_procedencia.id_lugar_procedencia
-WHERE lugar_procedencia.nombre = 'La yunga';
+-- Ítems usados en la reunión de "presentacion".
+SELECT i.id_item, i.nombre_item, r.id_reunion, r.tematica
+FROM item i
+JOIN item_reunion ir
+ON i.id_item = ir.id_item
+JOIN reunion r
+ON ir.id_reunion = r.id_reunion
+WHERE r.tematica = 'presentacion';
 
---Personas que no provienen de La yunga
-SELECT persona.id_persona,persona.nombre,lugar_procedencia.id_lugar_procedencia,lugar_procedencia.nombre
-FROM persona
-INNER JOIN lugar_procedencia 
-ON persona.id_lugar_procedencia = lugar_procedencia.id_lugar_procedencia
-WHERE NOT lugar_procedencia.nombre = 'La yunga';
+-- Número de ítems usados en la reunión de "presentacion".
+SELECT COUNT(*) AS numero_items, r.tematica
+FROM item i
+JOIN item_reunion ir
+ON i.id_item = ir.id_item
+JOIN reunion r
+ON ir.id_reunion = r.id_reunion
+WHERE r.tematica = 'presentacion';
 
---Item usados en la reunion de "presentacion"
-SELECT item.id_item,item.nombre_item,reunion.id_reunion,reunion.tematica
-FROM item
-JOIN item_reunion
-ON item.id_item= item_reunion.id_item
-JOIN reunion
-ON item_reunion.id_reunion = reunion.id_reunion
-WHERE reunion.tematica = 'presentacion';
+-- Listado de asistentes en la reunión "debates".
+SELECT p.id_persona, p.nombre, r.id_reunion, r.tematica
+FROM persona p
+JOIN persona_reunion pr
+ON p.id_persona = pr.id_persona
+JOIN reunion r
+ON pr.id_reunion = r.id_reunion
+WHERE r.tematica = 'debates';
 
---Numero de items usados en la reunion de "presentacion"
-SELECT COUNT(*) AS numero_items, reunion.tematica
-FROM item
-JOIN item_reunion
-ON item.id_item= item_reunion.id_item
-JOIN reunion
-ON item_reunion.id_reunion = reunion.id_reunion
-WHERE reunion.tematica = 'presentacion';
-
---Listado de asistentes en la reunion "debates"
-SELECT persona.id_persona, persona.nombre , reunion.id_reunion,reunion.tematica 
-FROM persona
-JOIN persona_reunion
-ON persona.id_persona = persona_reunion.id_persona
-JOIN reunion
-ON reunion.id_reunion = persona_reunion.id_reunion
-WHERE reunion.tematica = 'debates';
-
---Numero de asistentes en la reunion "debates"
+-- Número de asistentes en la reunión "debates".
 SELECT COUNT(*) AS numero_personas
-FROM persona
-JOIN persona_reunion
-ON persona_reunion.id_persona=persona.id_persona
-JOIN reunion 
-ON persona_reunion.id_reunion = reunion.id_reunion
-WHERE reunion.tematica ='debates';
+FROM persona p
+JOIN persona_reunion pr
+ON p.id_persona = pr.id_persona
+JOIN reunion r
+ON pr.id_reunion = r.id_reunion
+WHERE r.tematica = 'debates';
 
---Reuniones que hicieron en el lugar lomas
-SELECT reunion.id_reunion,reunion.tematica,lugar_reunion.id_lugar_reunion,lugar_reunion.nombre
-FROM lugar_reunion
-JOIN reunion_lugarreunion
-ON reunion_lugarreunion.id_lugar_reunion = lugar_reunion.id_lugar_reunion
-JOIN reunion
-ON reunion_lugarreunion.id_reunion = reunion.id_reunion
-WHERE lugar_reunion.nombre = 'lomas';
+-- Reuniones que se hicieron en el lugar "lomas".
+SELECT r.id_reunion, r.tematica, lr.id_lugar_reunion, lr.nombre
+FROM reunion r
+JOIN reunion_lugarreunion rl
+ON r.id_reunion = rl.id_reunion
+JOIN lugar_reunion lr
+ON rl.id_lugar_reunion = lr.id_lugar_reunion
+WHERE lr.nombre = 'lomas';
 
---Numero de reuniones que se hicieron en el lugar lomas
-SELECT COUNT(*) numero_reuniones, reunion.tematica
-FROM lugar_reunion
-JOIN reunion_lugarreunion
-ON reunion_lugarreunion.id_lugar_reunion = lugar_reunion.id_lugar_reunion
-JOIN reunion
-ON reunion_lugarreunion.id_reunion = reunion.id_reunion
-WHERE lugar_reunion.nombre = 'lomas';
+-- Número de reuniones que se hicieron en el lugar "lomas".
+SELECT COUNT(*) AS numero_reuniones, r.tematica
+FROM reunion r
+JOIN reunion_lugarreunion rl
+ON r.id_reunion = rl.id_reunion
+JOIN lugar_reunion lr
+ON rl.id_lugar_reunion = lr.id_lugar_reunion
+WHERE lr.nombre = 'lomas';
 
---Numero de asistentes en todas las reuniones
+-- Número de asistentes en todas las reuniones.
 SELECT COUNT(*) AS numero_asistentes
-FROM persona
-JOIN persona_reunion
-ON persona.id_persona = persona_reunion.id_persona
-JOIN reunion
-ON persona_reunion.id_reunion = reunion.id_reunion
+FROM persona p
+JOIN persona_reunion pr
+ON p.id_persona = pr.id_persona
+JOIN reunion r
+ON pr.id_reunion = r.id_reunion;
+
+-- Personas que asistieron a la reunión "lomas" y el lugar donde se realizó la reunión.
+SELECT lr.nombre AS lugar_reunion, r.tematica, p.nombre
+FROM reunion r
+JOIN persona_reunion pr
+ON r.id_reunion = pr.id_reunion
+JOIN persona p
+ON pr.id_persona = p.id_persona
+JOIN reunion_lugarreunion rl
+ON r.id_reunion = rl.id_reunion
+JOIN lugar_reunion lr
+ON rl.id_lugar_reunion = lr.id_lugar_reunion
+WHERE lr.nombre = 'lomas';
+
+-- Pregunta de la propuesta y la persona que la respondió y su respuesta.
+SELECT p.tema_propuesta, pg.descripcion_pregunta, pe.nombre, pp.respuesta
+FROM pregunta pg
+JOIN propuesta p
+ON p.id_propuesta = pg.id_propuesta
+JOIN persona_pregunta pp
+ON pp.id_pregunta = pg.id_pregunta
+JOIN persona pe
+ON pp.id_persona = pe.id_persona;
+
+-- Lugares que no tienen una reunión establecida.
+SELECT lr.*
+FROM lugar_reunion lr
+LEFT JOIN reunion_lugarreunion rl
+ON lr.id_lugar_reunion = rl.id_lugar_reunion
+WHERE rl.id_reunion IS NULL;
